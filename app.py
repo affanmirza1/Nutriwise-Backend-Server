@@ -256,6 +256,7 @@ from flask_cors import CORS
 from Function import predict_image
 from macros import calculate_bmr  # Import your calculate_bmr function
 from collection_handler import save_user_data, save_bmr_data, get_user_data
+from medical_records import save_medical_record, get_medical_records
 import os
 import requests
 
@@ -345,6 +346,38 @@ def get_user_data_api():
         return jsonify({'error': str(ve)}), 404  # HTTP 404 Not Found for user not found
     except Exception as e:
         return jsonify({'error': str(e)}), 500  # HTTP 500 Internal Server Error for other exceptions
+    
+
+@app.route('/save_medical_record', methods=['POST'])
+def save_user_medical_record():
+    try:
+        data = request.get_json()
+
+        # Extract required parameters from the JSON data
+        email = data['email']
+        medical_info = data['medical_info']  # Assuming 'medical_info' is an object containing date, description, and results
+
+        # Call the save_medical_record function
+        save_medical_record(email, medical_info)
+
+        return jsonify({'message': 'Medical record saved successfully'})
+    except Exception as e:
+        return jsonify({'error': str(e)})
+
+@app.route('/get_medical_records', methods=['POST'])
+def get_user_medical_records():
+    try:
+        data = request.get_json()
+
+        # Extract required parameters from the JSON data
+        email = data['email']
+
+        # Call the get_medical_records function
+        medical_records = get_medical_records(email)
+
+        return jsonify({'medical_records': medical_records})
+    except Exception as e:
+        return jsonify({'error': str(e)})
 
 if __name__ == '__main__':
     app.run(host="192.168.18.150", port=5000, debug=True)
