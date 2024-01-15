@@ -126,9 +126,9 @@ def get_user_medical_records():
     except Exception as e:
         return jsonify({'error': str(e)})
     #Default 
-@app.route('/')
-def default():
-    return 'Welcome to the Nutriwise Backend Server!'
+# @app.route('/')
+# def default():
+#     return 'Welcome to the Nutriwise Backend Server!'
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)
