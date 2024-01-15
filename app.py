@@ -128,7 +128,7 @@ def get_user_medical_records():
     
 @app.route('/')
 def default():
-    return 'Welcome to the Server!'
+    return 'Welcome to the Nutriwise Backend Server!'
 
 if __name__ == '__main__':
     app.run(host="0.0.0.0", port=5000, debug=True)
