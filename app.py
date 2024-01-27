@@ -8,6 +8,7 @@ from collection_handler import save_user_data, save_bmr_data, get_user_data
 from medical_records import save_medical_record, get_medical_records
 from mongo_connect import connect_to_mongo
 from scheduler import reset_nutrients
+from pytz import timezone
 import os
 import requests
 
@@ -16,6 +17,7 @@ CORS(app)
 
 NUTRITION_API_URL = "https://api.api-ninjas.com/v1/nutrition"
 API_KEY = "l82xUDUirHuKYdX5BiVtHw==iFIGX68tmV3ncaZd"
+karachi_timezone = timezone('Asia/Karachi')
 
 app.config['SCHEDULER_API_ENABLED'] = True
 app.config['JOBS'] = [
@@ -23,7 +25,7 @@ app.config['JOBS'] = [
         'id': 'reset_nutrients',
         'func': 'scheduler:reset_nutrients',  # Corrected reference to the function
         # 'trigger': CronTrigger(minute='*/5'),  # Every 5 minutes
-        'trigger': CronTrigger(hour=2, minute=15),
+        'trigger': CronTrigger(hour=2, minute=35, timezone=karachi_timezone), 
     }
 ]
 
