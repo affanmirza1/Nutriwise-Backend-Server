@@ -1,9 +1,12 @@
+from flask_apscheduler import APScheduler
+from apscheduler.triggers.cron import CronTrigger
 from flask import Flask, request, jsonify
 from flask_cors import CORS
 from Function import predict_image
 from macros import calculate_bmr  # Import calculate_bmr function
 from collection_handler import save_user_data, save_bmr_data, get_user_data
 from medical_records import save_medical_record, get_medical_records
+from mongo_connect import connect_to_mongo
 import os
 import requests
 
@@ -12,6 +15,21 @@ CORS(app)
 
 NUTRITION_API_URL = "https://api.api-ninjas.com/v1/nutrition"
 API_KEY = "l82xUDUirHuKYdX5BiVtHw==iFIGX68tmV3ncaZd"
+
+# APScheduler configuration
+app.config['SCHEDULER_API_ENABLED'] = True
+app.config['JOBS'] = [
+    {
+        'id': 'reset_nutrients',
+        'func': 'app:reset_nutrients',
+        # 'trigger': CronTrigger(hour=0, minute=0),  # Daily at midnight
+        'trigger': CronTrigger(minute='*/5'),
+    }
+]
+
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.start()
 
 def get_nutrition_info(food_query):
     try:
@@ -93,7 +111,20 @@ def get_user_data_api():
         return jsonify({'error': str(ve)}), 404  # HTTP 404 Not Found for user not found
     except Exception as e:
         return jsonify({'error': str(e)}), 500  # HTTP 500 Internal Server Error for other exceptions
-    
+
+def reset_nutrients():
+    try:
+        # Connect to MongoDB
+        mongo_client = connect_to_mongo()
+        db = mongo_client.Nutriwise
+        users_collection = db.users
+
+        # Reset nutrients intake for all users
+        users_collection.update_many({}, {'$set': {'nutrients_intake': []}})
+        print("Nutrients intake reset successfully.")
+    except Exception as e:
+        print(f"Error resetting nutrients intake: {str(e)}")
+
 #Default route
 @app.route('/')
 def default():
