@@ -22,7 +22,8 @@ app.config['JOBS'] = [
     {
         'id': 'reset_nutrients',
         'func': 'scheduler:reset_nutrients',  # Corrected reference to the function
-        'trigger': CronTrigger(minute='*/5'),  # Every 5 minutes
+        # 'trigger': CronTrigger(minute='*/5'),  # Every 5 minutes
+        'trigger': CronTrigger(hour=2, minute=15),
     }
 ]
 
