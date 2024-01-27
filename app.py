@@ -25,7 +25,7 @@ app.config['JOBS'] = [
         'id': 'reset_nutrients',
         'func': 'scheduler:reset_nutrients',  # Corrected reference to the function
         # 'trigger': CronTrigger(minute='*/5'),  # Every 5 minutes
-        'trigger': CronTrigger(hour=2, minute=35, timezone=karachi_timezone), 
+        'trigger': CronTrigger(hour=0, minute=0, timezone=karachi_timezone), 
     }
 ]
 
@@ -122,4 +122,5 @@ def default():
     return 'Welcome to the Nutriwise Backend Server!'
 
 if __name__ == '__main__':
-    app.run(host="0.0.0.0", port=5000, debug=True)
+    app.run(host="0.0.0.0", port=5000)
+
