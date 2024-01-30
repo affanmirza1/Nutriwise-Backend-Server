@@ -1,4 +1,4 @@
-# scheduler.py
+
 from collection_handler import connect_to_mongo
 
 def reset_nutrients():

@@ -23,8 +23,7 @@ app.config['SCHEDULER_API_ENABLED'] = True
 app.config['JOBS'] = [
     {
         'id': 'reset_nutrients',
-        'func': 'scheduler:reset_nutrients',  # Corrected reference to the function
-        # 'trigger': CronTrigger(minute='*/5'),  # Every 5 minutes
+        'func': 'scheduler:reset_nutrients',
         'trigger': CronTrigger(hour=0, minute=0, timezone=karachi_timezone), 
     }
 ]
@@ -49,13 +48,13 @@ def get_nutrition_info(food_query):
 def upload_image():
     try:
         image_file = request.files['image']
-        email = request.form.get('email')  # Modify as needed based on your frontend
+        email = request.form.get('email') 
 
         # Save the uploaded image temporarily
-        image_path = 'temp.jpg'  # Choose a temporary path
+        image_path = 'temp.jpg'  
         image_file.save(image_path)
 
-        # Call your predict_image function
+        # Call predict_image function
         prediction = predict_image(image_path)
 
         # Remove the temporary image
@@ -94,7 +93,7 @@ def calculate_user_bmr():
         return jsonify({'bmr_info': bmr_info})
     except Exception as e:
         return jsonify({'error': str(e)})
-# from bson import ObjectId  # Import ObjectId from pymongo library
+
 
 @app.route('/get_user_data', methods=['GET'])
 def get_user_data_api():
