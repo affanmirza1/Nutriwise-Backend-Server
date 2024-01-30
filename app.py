@@ -5,7 +5,6 @@ from flask_cors import CORS
 from Function import predict_image
 from macros import calculate_bmr  # Import calculate_bmr function
 from collection_handler import save_user_data, save_bmr_data, get_user_data
-from medical_records import save_medical_record, get_medical_records
 from mongo_connect import connect_to_mongo
 from scheduler import reset_nutrients
 from pytz import timezone
